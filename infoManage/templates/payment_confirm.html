@@ -1,0 +1,52 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    确认信息
+{% endblock %}
+
+
+{% block mainbody %}
+    <br>
+    <div class="card border-primary mb-3">
+        <div class="card-header"><span>信息核对</span></div>
+        <div class="card-body">
+            <p class="card-title">学生姓名：{{ student_model.学生姓名 }}</p>
+            <p class="card-text">学生性别：{{ student_model.学生性别 }}</p>
+            <p class="card-text">学生生日：{{ student_model.学生生日 }}</p>
+            <p class="card-text">家长姓名：{{ parent_model.家长姓名 }}</p>
+            <p class="card-text">家长联系方式：{{ parent_model.联系电话 }}</p>
+            <p class="card-text">与学生关系：{{ parent_model.与学生关系 }}</p>
+            <p class="card-text">报名项目：{{ payment_model.缴费项目.课程名称 }}</p>
+            <p class="card-text">课程定价：{{ payment_model.缴费项目.课程定价 }}</p>
+            <p class="card-text">使用优惠券：{{ coupon_model.优惠券编号 }}</p>
+            <p class="card-text">优惠券折扣：{{ coupon_model.优惠券编号.优惠券折扣 }}</p>
+            <p class="card-text">实际应缴费：{{ should_pay }}</p>
+        </div>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <div class="form-group col-md-3 align-items-left">
+            <label for="{{ payment_actual_amount_form.缴费金额.id_for_label }}">实际缴费</label>
+            <span class="badge badge-primary">必填</span>{{ payment_actual_amount_form.缴费金额 }}
+            <span class="help-tool">{{ payment_actual_amount_form.缴费金额.errors.0 }}</span>
+        </div>
+
+        <div class="form-group col-auto align-items-left">
+            <label for="{{ comment_form.备注.id_for_label }}">缴费备注</label>
+            {{ comment_form.备注 }}
+            <span class="help-tooltip">{{ comment_form.备注.errors.0 }}</span>
+        </div>
+
+        <br>
+        <button class="btn btn-success" type="submit">确认提交</button>
+
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+    </script>
+{% endblock %}

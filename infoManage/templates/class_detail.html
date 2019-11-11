@@ -1,0 +1,84 @@
+{% extends "components/base.html" %}
+
+
+{% block title %}
+    班信息
+{% endblock %}
+
+
+{% block nav %}
+    {% include "components/nav.html" with classActive='active' %}
+{% endblock %}
+
+
+{% block mainbody %}
+    <br>
+    <div class="card border-success mb-3">
+        <div class="card-header"><span>班号：</span>{{ class.id }}</div>
+        <div class="card-body">
+            <h5 class="card-title">{{ class.班名称 }}</h5>
+            <p class="card-text">时间：{{ class.上课时间 }}</p>
+            <p class="card-text">教室：{{ class.上课教室 }}</p>
+            <p class="card-text">老师：{{ class.老师编号 }}</p>
+            <p class="card-text">人数：{{ students_list_count }}</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-light card-header">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">学号</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col">性别</th>
+                    <th scope="col">年龄</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for student in students_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ student.学生编号.id }}</td>
+                        <td><a href="{% url 'infoManage:学生信息' student.学生编号.id %}">{{ student.学生编号.学生姓名 }}</a></td>
+                        <td>{{ student.学生编号.学生性别 }}</td>
+                        <td>{{ student_age.pop }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            班级备注
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for comment in class_comment %}
+                <li class="list-group-item"><span
+                        class="badge badge-pill badge-info">{{ comment.备注时间 }}</span> {{ comment.备注 }}
+                </li>
+            {% endfor %}
+            <li class="list-group-item">
+                <form action="" method="post" class="form-inline">
+                    {% csrf_token %}
+                    <label class="my-1 mr-2" for="{{ class_comment_form.备注.id_for_label }}">添加新备注</label>
+                    <textarea type="text" name="{{ class_comment_form.备注.html_name }}"
+                              class="form-control my-1 mr-sm-2 col-auto"
+                              id="{{ class_comment_form.备注.id_for_label }}" placeholder="备注" required></textarea>
+                    <button type="submit" class="btn btn-primary my-1">添加
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+    </script>
+{% endblock %}

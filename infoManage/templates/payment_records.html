@@ -1,0 +1,46 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    缴费记录
+{% endblock %}
+
+{% block nav %}
+    {% include "components/nav.html" with paymentRecordActive='active' %}
+{% endblock %}
+
+{% block mainbody %}
+    <br>
+    <div>
+        <a class="btn btn-primary" href="{% url 'infoManage:新生缴费' %}" role="button">新生缴费</a>
+        <a class="btn btn-primary" href="{% url 'infoManage:学生' %}" role="button">老生续费</a>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">缴费单号</th>
+                <th scope="col">缴费学生</th>
+                <th scope="col">缴费日期</th>
+                <th scope="col">缴费项目</th>
+                <th scope="col">缴费金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for record in payment_records %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><a href="{% url 'infoManage:缴费详单' record.id %}">{{ payment_converted_id.pop }}</a></td>
+                    <td>{{ record.缴费学生.学生姓名 }}</td>
+                    <td>{{ record.缴费时间 }}</td>
+                    <td>{{ record.缴费项目 }}</td>
+                    <td>{{ record.缴费金额 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

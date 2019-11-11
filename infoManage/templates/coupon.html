@@ -1,0 +1,40 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    优惠券
+{% endblock %}
+
+{% block nav %}
+    {% include "components/nav.html" with couponActive='active' %}
+{% endblock %}
+
+{% block mainbody %}
+<br>
+    <div>
+        <a class="btn btn-primary" href="{% url 'infoManage:新优惠券' %}" role="button">新优惠券</a>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">优惠券</th>
+                <th scope="col">优惠力度</th>
+                <th scope="col">使用说明</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for coupon in coupon_list %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ coupon.优惠券名称 }}</td>
+                    <td>{{ coupon.优惠券折扣 }}</td>
+                    <td>{{ coupon.优惠券介绍 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

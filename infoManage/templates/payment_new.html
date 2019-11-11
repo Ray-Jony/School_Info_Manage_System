@@ -1,0 +1,90 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    新缴费
+{% endblock %}
+
+
+{% block mainbody %}
+    <br>
+    注意这个页面会创建新的学生信息，如果是老生续费，请点击 <a href="{% url 'infoManage:学生' %}">老生续费</a>
+    <br>
+    <br>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="card border-dark mb-3">
+            <div class="card-header"><span>学生信息</span></div>
+            <div class="card-body">
+                <div class="form-row align-items-left">
+                    <div class="form-group col-auto">
+                        <label for="{{ sf.学生姓名.id_for_label }}">{{ sf.学生姓名.label }}</label>
+                        <span class="badge badge-primary">必填</span>{{ sf.学生姓名 }}
+                        <span class="help-tooltip">{{ sf.学生姓名.errors.0 }}</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <label for="{{ sf.学生性别.id_for_label }}">性别</label>
+                        <span class="badge badge-primary">必填</span>{{ sf.学生性别 }}
+                        <span class="help-tooltip">{{ sf.学生性别.errors.0 }}</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <label for="{{ sf.学生生日.id_for_label }}">{{ sf.学生生日.label }}</label>
+                        <span class="badge badge-primary">必填</span>{{ sf.学生生日 }}
+                        <span class="help-tooltip">{{ sf.学生生日.errors.0 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header"><span>家长信息</span></div>
+            <div class="card-body">
+                <div class="form-row align-items-left">
+                    <div class="form-group col-auto">
+                        <label for="{{ pf.家长姓名.id_for_label }}">{{ pf.家长姓名.label }}</label>
+                        {{ pf.家长姓名 }}
+                        <span class="help-tooltip">{{ pf.家长姓名.errors.0 }}</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <label for="{{ pf.联系电话.id_for_label }}">{{ pf.联系电话.label }}</label>
+                        {{ pf.联系电话 }}
+                        <span class="help-tooltip">{{ pf.联系电话.errors.0 }}</span>
+                    </div>
+                    <div class="form-group col-auto">
+                        <label for="{{ pf.与学生关系.id_for_label }}">{{ pf.与学生关系.label }}</label>
+                        {{ pf.与学生关系 }}
+                        <span class="help-tooltip">{{ pf.与学生关系.errors.0 }}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="card border-dark mb-3">
+            <div class="card-header"><span>报名信息</span></div>
+            <div class="card-body">
+                <div class="form-row align-items-left">
+                    <div class="form-group col-auto">
+                        <label for="{{ nf.缴费项目.id_for_label }}">报名项目</label>
+                        <span class="badge badge-primary">必填</span>{{ nf.缴费项目 }}
+                        <span class="help-tool">{{ nf.缴费项目.errors.0 }}</span>
+                    </div>
+
+                    <div class="form-group col-auto">
+                        <label for="{{ coupon_usage_form.优惠券编号.id_for_label }}">优惠券</label>
+                        {{ coupon_usage_form.优惠券编号 }}
+                        <span class="help-tooltip">{{ coupon_usage_form.优惠券编号.errors.0 }}</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">下一步</button>
+    </form>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+    </script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "components/base.html" %}
+
+
+{% block title %}
+    缴费详单
+{% endblock %}
+
+
+{% block nav %}
+    {% include "components/nav.html" with paymentRecordActive='active' %}
+{% endblock %}
+
+
+{% block mainbody %}
+    <br>
+    <div class="card border-success mb-3">
+        <div class="card-header"><span>缴费单号：</span>{{ payment_record.缴费编号 }}</div>
+        <div class="card-body">
+            <h5 class="card-title">{{ payment_record.缴费项目 }}</h5>
+            <p class="card-text">学费：{{ payment_record.缴费项目.课程定价 }}</p>
+            <p class="card-text">优惠券：
+                {% for coupon in this_coupon %}
+                    {{ coupon.优惠券编号 }}({{ coupon.优惠券编号.优惠券折扣 }})
+                {% endfor %}
+            </p>
+            <p class="card-text">实际缴费：{{ payment_record.缴费金额 }}</p>
+            <p class="card-text">学生：<a
+                    href="{% url 'infoManage:学生信息' payment_record.缴费学生.id %}">{{ payment_record.缴费学生 }}</a></p>
+            <p class="card-text">时间：{{ payment_record.缴费时间 }}</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            随单赠送
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            缴费备注
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for co in comment %}
+                <li class="list-group-item"><span class="badge badge-pill badge-info">{{ co.备注时间 }}</span> {{ co.备注 }}
+                </li>
+            {% endfor %}
+            <li class="list-group-item">
+                <form action="" method="post" class="form-inline">
+                    {% csrf_token %}
+                    <label class="my-1 mr-2" for="{{ c_form.备注.id_for_label }}">添加新备注</label>
+                    <textarea type="text" name="{{ c_form.备注.html_name }}" class="form-control my-1 mr-sm-2 col-md-5"
+                              id="{{ c_form.备注.id_for_label }}" placeholder="备注" required></textarea>
+                    <button type="submit" class="btn btn-primary my-1">添加
+                    </button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <form name="form_edit" action="" method="post">
+        {% csrf_token %}
+        <button type="button" class="btn btn-danger"
+                onclick="modifyFormAction('{% url 'infoManage:缴费详单删除' payment_record.id %}')">删除这个订单
+        </button>
+        <button type="button" class="btn btn-primary"
+                onclick="modifyFormAction('{% url 'infoManage:缴费详单编辑' payment_record.id %}')">编辑这个订单
+        </button>
+    </form>
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        function modifyFormAction(formAction) {
+            document.form_edit.action = formAction;
+            document.form_edit.submit()
+        }
+    </script>
+{% endblock %}

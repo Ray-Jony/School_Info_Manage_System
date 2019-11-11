@@ -1,0 +1,40 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    老师
+{% endblock %}
+
+{% block nav %}
+    {% include "components/nav.html" with teacherActive='active' %}
+{% endblock %}
+
+{% block mainbody %}
+    <br>
+    <div>
+    <a class="btn btn-primary" href="{% url 'infoManage:新老师' %}" role="button">新老师</a>
+    </div>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">教工号</th>
+                <th scope="col">姓名</th>
+                <th scope="col">联系电话</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for teacher in teacher_list %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ teacher.id }}</td>
+                    <td>{{ teacher.老师姓名 }}</td>
+                    <td>{{ teacher.老师电话 }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

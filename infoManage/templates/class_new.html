@@ -1,0 +1,42 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    新班
+{% endblock %}
+
+
+{% block mainbody %}
+    <br>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="form-group col-auto">
+            <label for="{{ class_form.班名称.id_for_label }}">{{ class_form.班名称.label }}</label>
+            {{ class_form.班名称 }}
+            <span class="help-tooltip">{{ class_form.班名称.errors.0 }}</span>
+        </div>
+        <div class="form-group col-auto">
+            <label for="{{ class_form.上课时间.id_for_label }}">{{ class_form.上课时间.label }}</label>
+            {{ class_form.上课时间 }}
+            <span class="help-tooltip">{{ class_form.上课时间.errors.0 }}</span>
+        </div>
+        <div class="form-group col-auto">
+            <label for="{{ class_form.上课教室.id_for_label }}">{{ class_form.上课教室.label }}</label>
+            {{ class_form.上课教室 }}
+            <span class="help-tooltip">{{ class_form.上课教室.errors.0 }}</span>
+        </div>
+        <div class="form-group col-auto">
+            <label for="{{ class_form.老师编号.id_for_label }}">{{ class_form.老师编号.label }}</label>
+            {{ class_form.老师编号 }}
+            <span class="help-tooltip">{{ class_form.老师编号.errors.0 }}</span>
+        </div>
+        <div class="form-group col-auto">
+            <label for="{{ class_form.课程编号.id_for_label }}">{{ class_form.课程编号.label }}</label>
+            {{ class_form.课程编号 }}
+            <span class="help-tooltip">{{ class_form.课程编号.errors.0 }}</span>
+        </div>
+        <div class="form-group col-auto">
+            <button class="btn btn-primary" type="submit">创建新班</button>
+        </div>
+    </form>
+{% endblock %}

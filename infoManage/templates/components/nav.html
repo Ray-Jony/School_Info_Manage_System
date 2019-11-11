@@ -1,0 +1,31 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        <div class="nav flex-column">
+
+            <a class="dropdown-item {{ homeActive }}" href={% url 'infoManage:主页' %}>主页</a>
+
+            <a class="dropdown-item {{ paymentRecordActive }}" href={% url 'infoManage:缴费记录表' %}>缴费记录</a>
+
+            <a class="dropdown-item {{ couponActive }}" href={% url 'infoManage:优惠券' %}>优惠券</a>
+
+            <a class="dropdown-item {{ classActive }}" href={% url 'infoManage:班' %}>班</a>
+
+            <a class="dropdown-item {{ studentActive }}" href={% url 'infoManage:学生' %}>学生</a>
+
+            <a class="dropdown-item {{ teacherActive }}" href={% url 'infoManage:老师' %}>老师</a>
+
+            <a class="dropdown-item {{ courseActive }}" href={% url 'infoManage:课程' %}>课程</a>
+
+            <a class="dropdown-item {{ TimeTableActive }}" href={% url 'infoManage:课程时间表' %}>课程时间表</a>
+
+        </div>
+
+        <h4 class="sidebar-heading d-flex justify-content-between align-items-center px-4 mt-5 mb-1 text-muted">仓库</h4>
+
+        <div class="nav flex-column mb-2">
+            <a class="dropdown-item" href="#">库存总览</a>
+            <a class="dropdown-item" href="#">入库记录</a>
+            <a class="dropdown-item" href="#">出库记录</a>
+        </div>
+    </div>
+</nav>

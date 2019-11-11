@@ -1,0 +1,201 @@
+{% extends "components/base.html" %}
+
+
+{% block title %}
+    学生信息
+{% endblock %}
+
+
+{% block nav %}
+    {% include "components/nav.html" with studentActive='active' %}
+{% endblock %}
+
+
+{% block mainbody %}
+    <br>
+    <div class="card border-success mb-3">
+        <div class="card-header"><span>学号：</span>{{ student.id }}</div>
+        <div class="card-body">
+            <h5 class="card-title">{{ student.学生姓名 }}</h5>
+            <p class="card-text">性别：{{ student.学生性别 }}</p>
+            <p class="card-text">生日：{{ student.学生生日 }}</p>
+            <p class="card-text">年龄：{{ student_age }}</p>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header" id="class_assignment_heading">
+            班级分配
+            <button class="btn btn-link btn-sm active collapsed" type="button" data-toggle="collapse"
+                    data-target="#class_assignment"
+                    aria-expanded="false" aria-controls="class_assignment">分配班级
+            </button>
+        </div>
+        <div id="class_assignment" class="collapse" aria-labelledby="class_assignment_heading">
+            <div class="card-body">
+                <form action="{% url 'infoManage:学生分配' student.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-inline">
+                        <label class="my-1 mr-2" for="{{ student_assign_form.班编号.id_for_label }}"> 选择班级 </label>
+                        {{ student_assign_form.班编号 }}
+                        <label class="my-1 mr-2" for="{{ student_assign_form.上课日期.id_for_label }}"> 开始日期 </label>
+                        {{ student_assign_form.上课日期 }}
+                        <label class="my-1 mr-2" for="{{ student_assign_form.结课日期.id_for_label }}"> 结课日期 </label>
+                        {{ student_assign_form.结课日期 }}
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary btn-sm my-1">确认分配</button>
+                </form>
+            </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            {% if class_assignment %}
+                {% for class_assign in class_assignment %}
+                    <li class="list-group-item">
+                        <span class="badge badge-pill badge-{{ class_state_color.pop }}">{{ class_assign.上课日期 }}</span>
+                        ->
+                        <span class="badge badge-pill badge-{{ class_state_color.pop }}">{{ class_assign.结课日期 }}</span>
+                        <a href="{% url 'infoManage:班信息' class_assign.班编号.id %}">{{ class_assign.班编号.班名称 }}</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item">
+                    这个学生目前没有分配任何班级
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header" id="parent_contact_heading">
+            家长联系方式
+            <button class="btn btn-link btn-sm active collapsed" type="button" data-toggle="collapse"
+                    data-target="#parent_contact"
+                    aria-expanded="false" aria-controls="parent_contact">添加联系方式
+            </button>
+        </div>
+        <div id="parent_contact" class="collapse" aria-labelledby="parent_contact_heading">
+            <div class="card-body">
+                <form action="{% url 'infoManage:新联系方式' student.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-inline">
+                        <label class="my-1 mr-2" for="{{ parent_contact_form.家长姓名.id_for_label }}"> 家长姓名 </label>
+                        {{ parent_contact_form.家长姓名 }}
+                        <label class="my-1 mr-2" for="{{ parent_contact_form.联系电话.id_for_label }}"> 联系电话 </label>
+                        {{ parent_contact_form.联系电话 }}
+                        <label class="my-1 mr-2" for="{{ parent_contact_form.与学生关系.id_for_label }}"> 与学生关系 </label>
+                        {{ parent_contact_form.与学生关系 }}
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary btn-sm my-1">确认添加</button>
+                </form>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% if parent_contact %}
+                {% for record in parent_contact %}
+                    <li class="list-group-item">
+                        <span class="badge badge-info">{{ record.与学生关系 }}</span>
+                        {{ record.家长姓名 }} {{ record.联系电话 }}
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item">
+                    这个学生还没有任何家长联系方式
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header" id="student_payment_heading">
+            学生缴费
+            <button class="btn btn-link btn-sm active collapsed" type="button" data-toggle="collapse"
+                    data-target="#student_payment_old"
+                    aria-expanded="false" aria-controls="student_payment_old">续费
+            </button>
+        </div>
+        <div id="student_payment_old" class="collapse" aria-labelledby="student_payment_heading">
+            <div class="card-body">
+                <form method="post" action="{% url 'infoManage:老生缴费' student.id %}">
+                    {% csrf_token %}
+                    <div class="form-row align-items-left">
+                        <div class="form-group col-auto">
+                            <label for="{{ payment_form.缴费项目.id_for_label }}">报名项目</label>
+                            <span class="badge badge-primary">必填</span>{{ payment_form.缴费项目 }}
+                            <span class="help-tool">{{ payment_form.缴费项目.errors.0 }}</span>
+                        </div>
+
+                        <div class="form-group col-auto">
+                            <label for="{{ coupon_usage_form.优惠券编号.id_for_label }}">优惠券</label>
+                            {{ coupon_usage_form.优惠券编号 }}
+                            <span class="help-tooltip">{{ coupon_usage_form.优惠券编号.errors.0 }}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm" type="submit">下一步</button>
+                </form>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% if student_payment_record %}
+                {% for record in student_payment_record %}
+                    <li class="list-group-item">
+                        缴费时间:
+                        <span class="badge badge-info">{{ record.缴费时间 }}</span>
+                        {{ record.缴费项目 }} {{ record.缴费金额 }}
+                        <a href="{% url 'infoManage:缴费详单' record.id %}">{{ record.缴费编号 }}</a>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item">
+                    这个学生还没有任何缴费记录
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+    <div class="card mb-3">
+        <div class="card-header" id="comment_heading">
+            学生备注
+            <button class="btn btn-link btn-sm active collapsed" type="button" data-toggle="collapse"
+                    data-target="#comments"
+                    aria-expanded="false" aria-controls="comments">添加备注
+            </button>
+        </div>
+        <div id="comments" class="collapse" aria-labelledby="comment_heading">
+            <div class="card-body">
+                <form action="" method="post" class="form-inline">
+                    {% csrf_token %}
+                    <label class="my-1 mr-2" for="{{ student_comment_form.备注.id_for_label }}">添加新备注</label>
+                    <textarea type="text" name="{{ student_comment_form.备注.html_name }}"
+                              class="form-control my-1 mr-sm-2 col-auto"
+                              id="{{ student_comment_form.备注.id_for_label }}" placeholder="备注" required></textarea>
+                    <button type="submit" class="btn btn-outline-primary my-1">添加</button>
+                </form>
+            </div>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            {% if student_comment %}
+                {% for comment in student_comment %}
+                    <li class="list-group-item"><span
+                            class="badge badge-pill badge-info">{{ comment.备注时间 }}</span> {{ comment.备注 }}
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item">
+                    这个学生还没有备注
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+    <script>
+
+    </script>
+{% endblock %}

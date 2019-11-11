@@ -1,0 +1,10 @@
+{% extends "components/base.html" %}
+{% load static %}
+
+{% block title %}
+    课程表
+{% endblock %}
+
+{% block nav %}
+    {% include "components/nav.html" with TimeTableActive='active' %}
+{% endblock %}
